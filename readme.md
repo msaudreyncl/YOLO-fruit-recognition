@@ -1,279 +1,360 @@
-# YOLO Fruit Detection System 🍎🍌🍊
+# 🍎🍌🍊 YOLO Fruit Detection System
 
-A real-time fruit detection system using **YOLO (You Only Look Once)** that identifies **apples, bananas, and oranges** through a live webcam feed.
+A real-time **fruit object detection system** developed using **YOLO11**, Python, Flask, PHP, JavaScript, and OpenCV.
 
-The project combines a trained YOLO object detection model with a **Python detection server** and a **PHP-based web interface**. Detected fruits are displayed with their corresponding **bounding boxes, class labels, and confidence scores**.
+The system is trained to detect three fruit classes:
+
+- 🍎 Apple
+- 🍌 Banana
+- 🍊 Orange
+
+The project covers the complete computer vision workflow—from dataset preparation and YOLO model training to model evaluation, API deployment, and live webcam detection through a web interface.
+
+---
+
+## System Overview
+
+The project follows this workflow:
+
+```text
+Dataset
+   ↓
+Train / Validation / Test
+   ↓
+YOLO11 Training
+   ↓
+best.pt
+   ↓
+Model Evaluation
+   ↓
+Python Flask API
+   ↓
+PHP + CSS + JavaScript Website
+   ↓
+Live Webcam
+   ↓
+Real-Time Fruit Detection
+```
+
+The browser captures frames from the webcam and sends them to the Flask API. The API uses the trained YOLO model to detect fruits and returns the detected class, confidence score, and bounding-box coordinates to the website.
 
 ---
 
 ## Features
 
-- Real-time webcam-based fruit detection
+- Real-time webcam detection
 - Detects **Apple, Banana, and Orange**
-- YOLO-based object detection
-- Displays bounding boxes around detected fruits
-- Shows predicted fruit class and confidence score
-- Uses a custom-trained fruit dataset
-- Python detection server for model inference
-- PHP, HTML, CSS, and JavaScript web interface
-- No manual image uploading required
-
----
-
-## System Workflow
-
-```text
-Live Webcam
-     ↓
-Capture Camera Frame
-     ↓
-Web Interface
-     ↓
-Python Detection Server
-     ↓
-YOLO Model
-     ↓
-Fruit Detection
-     ↓
-Class + Confidence + Bounding Box
-     ↓
-Display Detection Result
-```
-
-The browser captures frames from the webcam and sends them to the Python detection server. The trained YOLO model analyzes each frame and returns the detected fruit, confidence score, and bounding-box coordinates to the website.
-
----
-
-## Supported Classes
-
-| Class | Fruit |
-|---:|---|
-| 0 | Apple |
-| 1 | Banana |
-| 2 | Orange |
-
-The actual class IDs depend on the class order defined in `data.yaml`.
+- Supports multiple fruits in one frame
+- YOLO11 object detection
+- Bounding-box visualization
+- Detection confidence scores
+- Custom-trained `best.pt` model
+- Separate training, validation, and test datasets
+- Flask-based inference API
+- PHP-based web interface
+- Separate PHP, CSS, and JavaScript files
 
 ---
 
 ## Technologies Used
 
-**Machine Learning**
-- Python
-- Ultralytics YOLO
-- OpenCV
-
-**Backend**
-- Python detection server
-- Flask / API communication
-
-**Web Interface**
-- PHP
-- HTML
-- CSS
-- JavaScript
-
-**Development Environment**
-- Visual Studio Code
-- XAMPP
-- Python virtual environment
-
----
-
-## Dataset
-
-The YOLO model is trained using a custom dataset containing annotated images of:
-
-- Apples
-- Bananas
-- Oranges
-
-Each fruit is labeled using **bounding-box annotations** in YOLO format.
-
-Typical dataset structure:
-
-```text
-dataset/
-├── data.yaml
-├── train/
-│   ├── images/
-│   └── labels/
-└── valid/
-    ├── images/
-    └── labels/
-```
-
-A separate `test` folder is optional. The model can still be trained using the provided `train` and `valid` datasets.
+| Component | Technology |
+|---|---|
+| Object Detection | YOLO11 |
+| Model Training | Python / Ultralytics |
+| Computer Vision | OpenCV |
+| Training Environment | Jupyter Notebook |
+| Backend API | Flask + Flask-CORS |
+| Frontend | PHP, HTML, CSS, JavaScript |
+| Camera | Browser WebRTC / `getUserMedia()` |
 
 ---
 
 ## Project Structure
 
 ```text
-YOLO-fruit-recognition/
+fruit-yolo-system/
 │
-├── dataset/
-│   ├── data.yaml
-│   ├── train/
-│   └── valid/
+├── .venv/
 │
-├── runs/
-│   └── detect/
-│       └── train/
-│           └── weights/
-│               ├── best.pt
-│               └── last.pt
+├── training/
+│   ├── fruit_detection.ipynb
+│   │
+│   ├── dataset/
+│   │   ├── data.yaml
+│   │   ├── train/
+│   │   │   ├── images/
+│   │   │   └── labels/
+│   │   ├── valid/
+│   │   │   ├── images/
+│   │   │   └── labels/
+│   │   └── test/
+│   │       ├── images/
+│   │       └── labels/
+│   │
+│   ├── test_images/
+│   │   └── my_fruits.jpg
+│   │
+│   ├── runs/
+│   │   └── fruit_detector/
+│   │       └── weights/
+│   │           ├── best.pt
+│   │           └── last.pt
+│   │
+│   └── predictions/
 │
-├── website/
-│   ├── index.php
-│   ├── assets/
-│   ├── style/
-│   └── scripts/
+├── model/
+│   └── best.pt
 │
-├── detection_server.py
-├── train.py
-├── requirements.txt
-└── README.md
+├── api/
+│   └── app.py
+│
+└── website/
+    ├── index.php
+    ├── style/
+    │   └── style.css
+    ├── script/
+    │   └── script.js
+    └── assets/
 ```
+
+---
+
+## Dataset
+
+The dataset contains annotated images of **apples, bananas, and oranges** divided into three sets:
+
+- **Train** — used by YOLO to learn the fruit classes and bounding boxes.
+- **Validation** — used to monitor model performance during training.
+- **Test** — used for final evaluation using images not used for model training.
+
+The dataset configuration is stored in:
+
+```text
+training/dataset/data.yaml
+```
+
+The class order defined in `data.yaml` must not be changed because the YOLO annotation class IDs correspond to this order.
 
 ---
 
 ## Model Training
 
-Install Ultralytics:
+Training is performed through:
 
-```bash
-pip install ultralytics
+```text
+training/fruit_detection.ipynb
 ```
 
-Example training code:
+The project uses the lightweight **YOLO11 Nano (`yolo11n.pt`)** model to reduce hardware requirements.
+
+Example training configuration:
 
 ```python
-from ultralytics import YOLO
-
-model = YOLO("yolov8n.pt")
-
-model.train(
+results = model.train(
     data="dataset/data.yaml",
     epochs=50,
-    imgsz=640
+    imgsz=640,
+    batch=4,
+    device="cpu",
+    workers=2,
+    project="runs",
+    name="fruit_detector"
 )
 ```
 
-After training, the best-performing model is typically saved as:
+After training, YOLO generates:
 
 ```text
-runs/detect/train/weights/best.pt
+training/runs/fruit_detector/weights/
+├── best.pt
+└── last.pt
 ```
 
-This model is used by the detection server for fruit recognition.
+`best.pt` is used as the final model for evaluation and deployment.
+
+A copy is placed in:
+
+```text
+model/best.pt
+```
+
+for use by the Flask API.
+
+---
+
+## Model Evaluation
+
+The trained model is evaluated using both the validation and test datasets.
+
+Important evaluation metrics include:
+
+- Precision
+- Recall
+- mAP50
+- mAP50–95
+
+Predictions are also visually inspected to check for:
+
+- Correct fruit classification
+- Correct bounding boxes
+- Missed fruits
+- Incorrect classifications
+- Duplicate detections
+- Low-confidence detections
+
+The model is additionally tested using custom images and the computer's webcam before deployment to the website.
 
 ---
 
 ## Installation
 
-### 1. Clone or download the project
+### 1. Create and activate the virtual environment
 
-Place the project inside the XAMPP `htdocs` directory:
-
-```text
-C:\xampp\htdocs\YOLO-fruit-recognition
-```
-
-### 2. Create a virtual environment
-
-```powershell
+```bash
 python -m venv .venv
+.venv\Scripts\activate
 ```
 
-Activate it:
+### 2. Install dependencies
 
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-### 3. Install dependencies
-
-```powershell
-pip install -r requirements.txt
-```
-
-Typical dependencies include:
-
-```text
-ultralytics
-opencv-python
-flask
-flask-cors
-numpy
+```bash
+pip install ultralytics jupyterlab opencv-python flask flask-cors
 ```
 
 ---
 
 ## Running the System
 
-### 1. Start the Python Detection Server
+The complete application requires **two servers running at the same time**.
 
-From the project directory:
+### 1. Start the Flask Detection API
 
-```powershell
-.venv\Scripts\Activate.ps1
-python detection_server.py
+From the main project directory:
+
+```bash
+.venv\Scripts\activate
+cd api
+python app.py
 ```
 
-Keep this terminal running while using the website.
+The API runs at:
+
+```text
+http://127.0.0.1:5000
+```
+
+Check whether the model is ready through:
+
+```text
+http://127.0.0.1:5000/health
+```
+
+A successful response should indicate that the server is ready and show the available fruit classes.
 
 ### 2. Start the PHP Website
 
-Using XAMPP, open the **XAMPP Control Panel** and start:
+Open another terminal:
 
-```text
-Apache
+```bash
+cd website
 ```
 
-Then access the website through:
+If PHP is available in PATH:
 
-```text
-http://localhost/YOLO-fruit-recognition/website/
+```bash
+php -S localhost:8000
 ```
 
-Alternatively, use XAMPP's PHP executable:
+If using XAMPP's PHP executable:
 
-```powershell
-C:\xampp\php\php.exe -S localhost:8080 -t website
+```bash
+C:\xampp\php\php.exe -S localhost:8000
 ```
 
 Then open:
 
 ```text
-http://localhost:8080
+http://localhost:8000
 ```
-
-### 3. Allow Camera Access
-
-Allow the browser to access the webcam when prompted.
-
-Present an **apple, banana, or orange** in front of the camera to begin detection.
 
 ---
 
-## Detection Output
+## Live Detection Process
 
-For each detected fruit, the system can display:
-
-- **Fruit class** — Apple, Banana, or Orange
-- **Confidence score** — probability of the prediction
-- **Bounding box** — location of the detected fruit in the camera frame
-
-Example:
+Once both servers are running:
 
 ```text
-Apple — 94%
-Banana — 89%
-Orange — 91%
+Webcam
+   ↓
+JavaScript captures frame
+   ↓
+POST image to /detect
+   ↓
+Flask API
+   ↓
+model/best.pt
+   ↓
+YOLO inference
+   ↓
+JSON detection results
+   ↓
+JavaScript
+   ↓
+Bounding Boxes + Class + Confidence
 ```
 
-A confidence threshold can be used to prevent low-confidence detections from being displayed.
+The user must first click **Start Camera** and allow browser camera access.
+
+After clicking **Start Detection**, camera frames are continuously sent to the Flask API for inference.
+
+Each detection contains:
+
+```text
+Fruit Class
+Confidence Score
+Bounding Box Coordinates
+```
+
+For example:
+
+```text
+Apple  — 94%
+Banana — 91%
+Orange — 89%
+```
+
+Multiple fruits can also be detected within the same frame.
+
+---
+
+## API Endpoints
+
+### `GET /health`
+
+Checks whether the Flask server and YOLO model are ready.
+
+### `POST /detect`
+
+Receives a camera frame, processes it using `best.pt`, and returns detected fruits as JSON.
+
+Example response:
+
+```json
+{
+    "detections": [
+        {
+            "class": "apple",
+            "confidence": 0.94,
+            "x1": 120,
+            "y1": 80,
+            "x2": 350,
+            "y2": 310
+        }
+    ],
+    "count": 1
+}
+```
 
 ---
 
@@ -281,79 +362,76 @@ A confidence threshold can be used to prevent low-confidence detections from bei
 
 ### Detection Server Unavailable
 
-Make sure the Python detection server is running:
+Make sure the Flask server is running:
 
-```powershell
-python detection_server.py
+```bash
+cd api
+python app.py
 ```
 
-Also verify that the website is communicating with the correct server address and port.
+Then check:
+
+```text
+http://127.0.0.1:5000/health
+```
 
 ### `php` is not recognized
 
-If PowerShell does not recognize the `php` command, use the PHP executable included with XAMPP:
+Use the PHP executable included with XAMPP:
 
-```powershell
-C:\xampp\php\php.exe -S localhost:8080 -t website
+```bash
+C:\xampp\php\php.exe -S localhost:8000
 ```
 
 ### Camera Not Working
 
-Check:
+Check browser camera permissions and make sure no other application is currently using the webcam.
 
-- Browser camera permissions
-- Windows camera privacy settings
-- Whether another application is using the webcam
-- Whether the website is running through `localhost`
+### Detection Is Slow
 
-### Poor or Incorrect Detection
+The system performs inference using the CPU. The inference image size can be reduced to improve performance:
 
-Detection accuracy can be affected by:
+```python
+results = model.predict(
+    source=image,
+    conf=0.50,
+    imgsz=416,
+    verbose=False
+)
+```
 
-- Poor lighting
-- Complex backgrounds
-- Distance from the camera
-- Fruit orientation
-- Limited training data
-- Incorrect annotations
-- High confidence threshold
+The interval between detection requests can also be increased in `script.js`.
 
 ---
 
 ## Limitations
 
-The current model is trained specifically to recognize **apples, bananas, and oranges**. Objects outside these classes are not intentionally recognized.
-
-Model accuracy may vary depending on lighting, camera quality, object orientation, background conditions, and the quality of the training dataset.
-
----
-
-## Future Improvements
-
-Future versions of the system may include:
-
-- Additional fruit classes
-- Larger and more diverse datasets
-- Improved detection accuracy
-- Detection history
-- Saved detection results
-- Performance statistics
-- Improved web interface
-- Raspberry Pi deployment
-- Faster real-time inference
+- Detects only Apple, Banana, and Orange.
+- Detection accuracy depends on the quality of the training dataset.
+- Lighting, background, camera quality, distance, and fruit orientation may affect detection.
+- Real-time inference speed is limited when running on CPU.
+- The system is intended primarily for academic and educational use.
 
 ---
 
 ## Purpose
 
-The **YOLO Fruit Detection System** was developed as an academic computer vision project demonstrating the integration of:
+The **YOLO Fruit Detection System** was developed as a practical introduction to the complete object-detection pipeline:
 
-**Machine Learning + Computer Vision + Web Development**
+```text
+Dataset Preparation
+        ↓
+YOLO Training
+        ↓
+Validation & Testing
+        ↓
+Model Deployment
+        ↓
+Flask API
+        ↓
+Web Integration
+        ↓
+Real-Time Detection
+```
 
-It provides a practical implementation of custom dataset preparation, YOLO model training, real-time object detection, API communication, and web-based visualization.
-
----
-
-## License
-
-This project is intended for **educational and academic purposes**. Third-party datasets, pretrained models, libraries, and frameworks remain subject to their respective licenses.
+The project demonstrates how a trained computer vision model can be integrated into a web-based application for real-time object detection.
