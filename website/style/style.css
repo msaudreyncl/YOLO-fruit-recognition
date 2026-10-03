@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f5f6f4;
+    color: #20251f;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: auto;
+    padding: 50px 0;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+.eyebrow {
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #657260;
+}
+
+h1 {
+    margin-bottom: 8px;
+    font-size: 36px;
+}
+
+header > p:last-child {
+    color: #6c716b;
+}
+
+.detector,
+.results {
+    margin-bottom: 20px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e1e4df;
+    border-radius: 16px;
+}
+
+.camera-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #151815;
+    border-radius: 12px;
+}
+
+#camera,
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#overlay {
+    pointer-events: none;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+button {
+    padding: 12px 18px;
+    color: white;
+    font-weight: 600;
+    background: #273f2a;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+button:disabled {
+    background: #b8bdb8;
+    cursor: not-allowed;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+#status-dot {
+    width: 9px;
+    height: 9px;
+    background: #aaaaaa;
+    border-radius: 50%;
+}
+
+.results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+#fruit-count {
+    padding: 7px 11px;
+    font-size: 13px;
+    background: #eef2ed;
+    border-radius: 20px;
+}
+
+.detection-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.detection-item:last-child {
+    border-bottom: 0;
+}

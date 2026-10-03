@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 3
+names: ['apple', 'banana', 'orange']
+
+roboflow:
+  workspace: data-demo
+  project: apple-banana-orange-hsyde-vgk1c
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/data-demo/apple-banana-orange-hsyde-vgk1c/dataset/1
